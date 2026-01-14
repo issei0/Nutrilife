@@ -334,6 +334,8 @@ function addMeal() {
   document.getElementById("mealTime").value = "";
   document.getElementById("mealFood").value = "";
   document.getElementById("mealQty").value = "";
+   // ✅ ensure divider is visible
+  document.getElementById("trackerDivider").classList.remove("hidde");
 }
 
 function calculateTotals(dateString) {
@@ -555,6 +557,8 @@ function showFoodRecommendations() {
 
   document.getElementById("recommendationResults").innerHTML = html;
   document.getElementById("showRecommendationBtn").classList.add("hidden");
+   // ✅ ensure divider is visible
+  document.getElementById("trackerDivider").classList.remove("hidden");
 }
 
 function refreshPremiumFeatures() {
