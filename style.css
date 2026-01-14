@@ -1,0 +1,469 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f3faf5;
+  color: #2e4d3a;
+}
+
+nav {
+  background: #2e8b57;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+  align-items: center;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav li {
+  cursor: pointer;
+}
+
+main {
+  padding: 50px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.page {
+  display: none;
+  width: 100%;
+  text-align: center;
+}
+
+.page.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 900px;
+}
+
+.hidden { display: none; }
+.card h3 { margin-top: 0; }
+.card a { color: #2e8b57; text-decoration: none; font-weight: 600; }
+.card a:hover { text-decoration: underline; }
+
+input, select, button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+button {
+  background: #2e8b57;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s, box-shadow 0.15s;
+}
+
+button:hover {
+  background-color: #256f48;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+button.locked {
+  background: #2e8b57;
+  opacity: 0.85;
+}
+
+button.locked:hover {
+  opacity: 1;
+}
+
+.features {
+  text-align: left;
+  padding-left: 0;
+  list-style: none;
+}
+
+.features li {
+  margin: 10px 0;
+}
+
+.muted {
+  opacity: 0.7;
+}
+
+#bmiResult {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+#nutritionResult {
+  margin-top: 20px;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.nutrient-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+.nutrition-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.nutrition-table th,
+.nutrition-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.nutrition-table th {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.nutrition-table tr:nth-child(even) {
+  background-color: #f4f8f4;
+}
+
+.nutrition-table tr:hover {
+  background-color: #e8f5e9;
+}
+
+.nutrition-table tr.low {
+  background-color: #ffebee;
+}
+
+.nutrition-table tr.ok {
+  background-color: #e8f5e9;
+}
+
+.nutrition-table tr.high {
+  background-color: #fff8e1;
+}
+
+.nutrition-table .status {
+  font-weight: bold;
+}
+
+.nutrition-table tr.low .status {
+  color: #c62828;
+}
+
+.nutrition-table tr.ok .status {
+  color: #2e7d32;
+}
+
+.nutrition-table tr.high .status {
+  color: #f9a825;
+}
+
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, #2e8b57, #1f5f3a);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeOut 3s ease forwards;
+}
+
+.success-overlay.hidden {
+  display: none;
+}
+
+.celebration {
+  color: white;
+  text-align: center;
+  animation: popIn 0.6s ease;
+}
+
+.celebration h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.celebration p {
+  font-size: 1.3rem;
+  opacity: 0.9;
+}
+
+.confetti::before,
+.confetti::after {
+  content: "🎊 🎉 🎊 🎉 🎊 🎉";
+  position: absolute;
+  font-size: 2rem;
+  animation: confettiFall 2.5s linear infinite;
+}
+
+.confetti::after {
+  animation-delay: 0.5s;
+}
+
+#showRecommendationBtn {
+  margin-top: 20px;
+  background-color: #2e8b57;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#showRecommendationBtn:hover {
+  background-color: #256f48;
+}
+
+.suggestions li {
+  margin: 8px 0;
+  text-align: left;
+}
+
+.success-msg {
+  color: green;
+  font-weight: bold;
+}
+
+/* DASHBOARD STYLES */
+.dashboard-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 20px 0;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.dashboard-icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
+}
+
+.dashboard-card h4 {
+  margin: 10px 0;
+  font-size: 1.4rem;
+  color: #2e8b57;
+}
+
+.dashboard-card p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.feature-section {
+  margin-top: 20px;
+}
+
+.back-btn {
+  background: #555;
+  margin-bottom: 20px;
+  width: auto;
+  padding: 10px 20px;
+  display: inline-block;
+}
+
+.back-btn:hover {
+  background: #333;
+}
+
+/* WATER TRACKER STYLES */
+.water-display {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.water-amount {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #2e8b57;
+  margin-bottom: 10px;
+}
+
+.water-goal {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.water-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.water-buttons button {
+  width: 100%;
+  padding: 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-water-btn {
+  background: #e74c3c !important;
+}
+
+.reset-water-btn:hover {
+  background: #c0392b !important;
+}
+
+.water-progress {
+  width: 100%;
+  height: 40px;
+  background: #e0e0e0;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 30px;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2e8b57, #3cb371);
+  width: 0%;
+  transition: width 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* WEEKLY STATS */
+.weekly-stats {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.stats-hint {
+  color: #666;
+  font-style: italic;
+  margin: 20px 0;
+}
+
+/* CHART CONTAINER */
+.chart-container {
+  position: relative;
+  width: 100%;
+  margin: 30px 0;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+#weeklyChart {
+  max-height: 400px;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Animations */
+@keyframes popIn {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes confettiFall {
+  from {
+    transform: translateY(-50px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(200px);
+    opacity: 0;
+  }
+}
+
+@media (min-width: 900px) {
+  #nutritionResult {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .water-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-container {
+    padding: 10px;
+  }
+}
