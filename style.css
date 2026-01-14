@@ -9,6 +9,14 @@ body {
   color: #2e4d3a;
 }
 
+.hidde {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
 nav {
   background: #2e8b57;
   color: white;
