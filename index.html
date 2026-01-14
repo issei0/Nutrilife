@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nutrition Life</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="logo">🌿 Nutri Life</div>
+  <ul>
+    <li onclick="showPage('home')">Home</li>
+    <li onclick="showPage('bmi')">BMI Calculator</li>
+    <li id="navSubscription" onclick="showPage('subscription')">
+      Subscription
+    </li>
+    <li onclick="showPage('account')">My Account</li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- HOME -->
+  <section id="home" class="page active">
+    <h1>Eat Smart. Live Better.</h1>
+
+    <div class="card">
+      <input id="foodInput" placeholder="Food name (e.g. Banana)" />
+      <input id="qtyInput" type="number" placeholder="Quantity (grams)" />
+      <button onclick="calculateNutrition()">Calculate</button>
+
+      <div id="nutritionResult"></div>
+    </div>
+  </section>
+
+  <!-- BMI -->
+  <section id="bmi" class="page">
+    <h1>BMI Calculator</h1>
+
+    <div class="card">
+      <input id="height" type="number" placeholder="Height (cm)" />
+      <input id="weight" type="number" placeholder="Weight (kg)" />
+      <button onclick="calculateBMI()">Calculate BMI</button>
+
+      <div id="bmiResult"></div>
+    </div>
+  </section>
+
+  <!-- SUBSCRIPTION -->
+  <section id="subscription" class="page">
+    <h1>Premium Features</h1>
+
+    <div class="card">
+      <ul class="features">
+        <li>📊 Daily & Weekly Calories Dashboard</li>
+        <li>🥗 Nutrition Charts & Macro Breakdown</li>
+        <li>💧 Daily Water Intake Tracker</li>
+        <li>🔥 Daily Calorie Consumption Tracker</li>
+        <li>🧬 Food Recommendations for Nutrient Deficiency</li>
+        <li>💪 Plans for Fat Loss, Fat Gain & Muscle Building</li>
+      </ul>
+
+      <button class="locked" onclick="showPage('account')">
+        Subscribe to Unlock
+      </button>
+
+    </div>
+  </section>
+
+  <!-- ACCOUNT -->
+<section id="account" class="page">
+  <h1>My Account</h1>
+
+  <!-- LOGIN -->
+  <div class="card" id="loginCard">
+    <h3>Login</h3>
+    <input type="email" id="loginEmail" placeholder="Email" />
+    <input type="password" id="loginPassword" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <p class="muted">
+      Don't have an account?
+      <a href="#" onclick="showSignup()">Sign up</a>
+    </p>
+  </div>
+
+  <!-- SIGN UP -->
+  <div class="card hidden" id="signupCard">
+    <h3>Create Account</h3>
+    <input type="text" id="signupName" placeholder="Full name" />
+    <input type="email" id="signupEmail" placeholder="Email" />
+    <input type="password" id="signupPassword" placeholder="Password" />
+    <select id="planSelect">
+      <option value="monthly">Monthly - $9.99</option>
+      <option value="yearly">Yearly - $99.99</option>
+    </select>
+    <button onclick="signup()">Continue to Payment</button>
+    <p class="muted">
+      Already have an account?
+      <a href="#" onclick="showLogin()">Login</a>
+    </p>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="card hidden" id="paymentCard">
+    <h3>Payment</h3>
+    <input type="text" id="cardName" placeholder="Cardholder Name" />
+    <input type="text" id="cardNumber" placeholder="Card Number" maxlength="19" oninput="formatCardNumber(this)" />
+    <input type="text" id="cardExpiry" placeholder="MM / YY" maxlength="5" oninput="formatExpiry(this)" />
+    <input type="text" id="cardCVC" placeholder="CVC" maxlength="4" />
+    <button onclick="confirmPayment()">Confirm Subscription</button>
+    <p class="muted">🔒 Secure payment (demo)</p>
+  </div>
+
+  <!-- FULLSCREEN SUCCESS OVERLAY -->
+  <div id="successOverlay" class="success-overlay hidden">
+    <div class="celebration">
+      <h1>🎉 Subscription Activated!</h1>
+      <p>Welcome to Premium Nutrition Life</p>
+      <div class="confetti"></div>
+    </div>
+  </div>
+
+  
+  <!-- PREMIUM DASHBOARD -->
+  <div id="premiumDashboard" class="hidden dashboard-container">
+    <h3>Premium Dashboard</h3>
+    
+    <div class="dashboard-grid">
+      <div class="dashboard-card" onclick="showFeatureSection('addMeals')">
+        <div class="dashboard-icon">🍽️</div>
+        <h4>Add Meals</h4>
+        <p>Track daily nutrition</p>
+      </div>
+
+      <div class="dashboard-card" onclick="showFeatureSection('waterTracker')">
+        <div class="dashboard-icon">💧</div>
+        <h4>Water Tracker</h4>
+        <p>Monitor hydration</p>
+      </div>
+
+      <div class="dashboard-card" onclick="showFeatureSection('weeklyNutrition')">
+        <div class="dashboard-icon">📊</div>
+        <h4>Weekly Nutrition</h4>
+        <p>View your progress</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD MEALS FEATURE -->
+  <div id="addMealsSection" class="hidden card feature-section">
+    <button class="back-btn" onclick="backToDashboard()">← Back to Dashboard</button>
+    
+    <h3>Daily Nutrition Tracker</h3>
+
+    <label>Gender</label>
+    <select id="genderSelect">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <label>Date</label>
+    <input type="date" id="mealDate" />
+
+    <label>Meal Time</label>
+    <input type="time" id="mealTime" />
+
+    <label>Food Name</label>
+    <input type="text" id="mealFood" placeholder="e.g. Banana" />
+
+    <label>Quantity (grams)</label>
+    <input type="number" id="mealQty" placeholder="e.g. 120" />
+
+    <button onclick="addMeal()">Add Meal</button>
+
+    <hr />
+
+    <div id="dailySummaryContainer">
+      <div id="dailySummary"></div>
+    </div>
+
+    <hr />
+
+    <button id="showRecommendationBtn" class="hidden" onclick="showFoodRecommendations()">Show Food Recommendations</button>
+    <div id="recommendationResults"></div>
+  </div>
+
+  <!-- WATER TRACKER FEATURE -->
+  <div id="waterTrackerSection" class="hidden card feature-section">
+    <button class="back-btn" onclick="backToDashboard()">← Back to Dashboard</button>
+    
+    <h3>💧 Water Intake Tracker</h3>
+    <p class="muted">Track your daily water consumption</p>
+
+    <div class="water-display">
+      <div class="water-amount" id="waterAmount">0 ml</div>
+      <div class="water-goal">Goal: <span id="waterGoal">2700 ml</span></div>
+    </div>
+
+    <div class="water-buttons">
+      <button onclick="addWater(250)">+ 250ml (Glass)</button>
+      <button onclick="addWater(500)">+ 500ml (Bottle)</button>
+      <button onclick="addWater(1000)">+ 1000ml (Large Bottle)</button>
+      <button onclick="resetWater()" class="reset-water-btn">Reset</button>
+    </div>
+
+    <div class="water-progress">
+      <div id="waterProgressBar" class="progress-bar"></div>
+    </div>
+  </div>
+
+  <!-- WEEKLY NUTRITION FEATURE -->
+  <div id="weeklyNutritionSection" class="hidden card feature-section">
+    <button class="back-btn" onclick="backToDashboard()">← Back to Dashboard</button>
+    
+    <h3>📊 Weekly Nutrition Overview</h3>
+    <p class="muted">Your nutrition summary for the past 7 days</p>
+
+    <div class="chart-container">
+      <canvas id="weeklyChart"></canvas>
+    </div>
+
+    <div id="weeklyStats" class="weekly-stats">
+      <p class="stats-hint">💡 Add meals throughout the week to see your nutrition trends!</p>
+    </div>
+  </div>
+
+  <button id="logoutBtn" class="hidden" onclick="logout()">
+    Logout
+  </button>
+
+</section>
+
+</main>
+
+<script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>
