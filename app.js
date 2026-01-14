@@ -1,7 +1,7 @@
 let foods = [];
 
 async function loadCSV() {
-  const res = await fetch("data/FOOD-DATA-GROUP1.csv");
+  const res = await fetch("./data.csv");
   const text = await res.text();
 
   const lines = text.trim().split(/\r?\n/);
