@@ -109,12 +109,127 @@ function calculateBMI() {
   }
 
   const bmi = (w / (h * h)).toFixed(1);
-  document.getElementById("bmiResult").innerText = `BMI: ${bmi}`;
+  
+  // Determine BMI category and status
+  let category = "";
+  let status = "";
+  let advice = "";
+  let emoji = "";
+  
+  if (bmi < 18.5) {
+    category = "Underweight";
+    status = "low";
+    emoji = "⚠️";
+    advice = "You may need to gain weight. Consult a healthcare provider for personalized advice.";
+  } else if (bmi >= 18.5 && bmi < 25) {
+    category = "Normal Weight";
+    status = "normal";
+    emoji = "✅";
+    advice = "Great! You're in a healthy weight range. Keep maintaining your lifestyle.";
+  } else if (bmi >= 25 && bmi < 30) {
+    category = "Overweight";
+    status = "moderate";
+    emoji = "⚠️";
+    advice = "Consider adopting a healthier diet and increasing physical activity.";
+  } else {
+    category = "Obese";
+    status = "high";
+    emoji = "🔴";
+    advice = "It's recommended to consult a healthcare provider for weight management guidance.";
+  }
+  
+  document.getElementById("bmiResult").innerHTML = `
+    <div class="bmi-result-card ${status}">
+      <div class="bmi-emoji">${emoji}</div>
+      <div class="bmi-value">BMI: ${bmi}</div>
+      <div class="bmi-category">${category}</div>
+      <div class="bmi-advice">${advice}</div>
+      <div class="bmi-scale">
+        <div class="scale-item">
+          <div class="scale-bar underweight ${status === 'low' ? 'active' : ''}"></div>
+          <div class="scale-label">Underweight<br>&lt;18.5</div>
+        </div>
+        <div class="scale-item">
+          <div class="scale-bar normal ${status === 'normal' ? 'active' : ''}"></div>
+          <div class="scale-label">Normal<br>18.5-24.9</div>
+        </div>
+        <div class="scale-item">
+          <div class="scale-bar overweight ${status === 'moderate' ? 'active' : ''}"></div>
+          <div class="scale-label">Overweight<br>25-29.9</div>
+        </div>
+        <div class="scale-item">
+          <div class="scale-bar obese ${status === 'high' ? 'active' : ''}"></div>
+          <div class="scale-label">Obese<br>≥30</div>
+        </div>
+      </div>
+    </div>
+  `;
+  
   document.getElementById("height").value = "";
   document.getElementById("weight").value = "";
 }
 
 loadCSV();
+
+// AUTOCOMPLETE FUNCTIONALITY
+function showSuggestions(inputId, suggestionsId) {
+  const input = document.getElementById(inputId);
+  const suggestionsDiv = document.getElementById(suggestionsId);
+  const searchText = input.value.toLowerCase().trim();
+
+  // Clear suggestions if input is empty or less than 1 character
+  if (searchText.length < 1) {
+    suggestionsDiv.classList.remove('show');
+    suggestionsDiv.innerHTML = '';
+    return;
+  }
+
+  // Filter foods that match the search text
+  const matches = foods.filter(food => 
+    food.name && food.name.toLowerCase().includes(searchText)
+  ).slice(0, 10); // Limit to 10 suggestions
+
+  // If no matches, hide suggestions
+  if (matches.length === 0) {
+    suggestionsDiv.classList.remove('show');
+    suggestionsDiv.innerHTML = '';
+    return;
+  }
+
+  // Create suggestion items
+  let html = '';
+  matches.forEach(food => {
+    const foodName = food.name;
+    // Highlight matching text
+    const regex = new RegExp(`(${searchText})`, 'gi');
+    const highlightedName = foodName.replace(regex, '<span class="suggestion-highlight">$1</span>');
+    
+    html += `<div class="suggestion-item" onclick="selectSuggestion('${inputId}', '${suggestionsId}', '${foodName.replace(/'/g, "\\'")}')">${highlightedName}</div>`;
+  });
+
+  suggestionsDiv.innerHTML = html;
+  suggestionsDiv.classList.add('show');
+}
+
+function selectSuggestion(inputId, suggestionsId, foodName) {
+  const input = document.getElementById(inputId);
+  const suggestionsDiv = document.getElementById(suggestionsId);
+  
+  input.value = foodName;
+  suggestionsDiv.classList.remove('show');
+  suggestionsDiv.innerHTML = '';
+}
+
+// Close suggestions when clicking outside
+document.addEventListener('click', function(e) {
+  const suggestions = document.querySelectorAll('.autocomplete-suggestions');
+  suggestions.forEach(suggestionDiv => {
+    if (!suggestionDiv.parentElement.contains(e.target)) {
+      suggestionDiv.classList.remove('show');
+      suggestionDiv.innerHTML = '';
+    }
+  });
+});
 
 function showLogin() {
   hideAllAccountCards();
@@ -334,7 +449,8 @@ function addMeal() {
   document.getElementById("mealTime").value = "";
   document.getElementById("mealFood").value = "";
   document.getElementById("mealQty").value = "";
-   // ✅ ensure divider is visible
+
+  // ✅ ensure divider is visible
   document.getElementById("trackerDivider").classList.remove("hidde");
 }
 
@@ -557,7 +673,8 @@ function showFoodRecommendations() {
 
   document.getElementById("recommendationResults").innerHTML = html;
   document.getElementById("showRecommendationBtn").classList.add("hidden");
-   // ✅ ensure divider is visible
+
+  // ✅ ensure divider is visible
   document.getElementById("trackerDivider").classList.remove("hidden");
 }
 
