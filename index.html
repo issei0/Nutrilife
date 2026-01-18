@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Nutri Life</title>
+  <title>Nutrition Life</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <nav>
-  <div class="logo">🌿 Nutri Life</div>
+  <div class="logo">🌿 NutritionLife</div>
   <ul>
     <li onclick="showPage('home')">Home</li>
     <li onclick="showPage('bmi')">BMI Calculator</li>
@@ -26,7 +26,10 @@
     <h1>Eat Smart. Live Better.</h1>
 
     <div class="card">
-      <input id="foodInput" placeholder="Food name (e.g. Banana)" />
+      <div class="autocomplete-wrapper">
+        <input id="foodInput" placeholder="Food name (e.g. Banana)" autocomplete="off" oninput="showSuggestions('foodInput', 'homeSuggestions')" />
+        <div id="homeSuggestions" class="autocomplete-suggestions"></div>
+      </div>
       <input id="qtyInput" type="number" placeholder="Quantity (grams)" />
       <button onclick="calculateNutrition()">Calculate</button>
 
@@ -160,13 +163,16 @@
     </select>
 
     <label>Date</label>
-    <input type="date" id="mealDate" />
+    <input type="date" id="mealDate" onchange="handleDateChange()" />
 
     <label>Meal Time</label>
     <input type="time" id="mealTime" />
 
     <label>Food Name</label>
-    <input type="text" id="mealFood" placeholder="e.g. Banana" />
+    <div class="autocomplete-wrapper">
+      <input type="text" id="mealFood" placeholder="e.g. Banana" autocomplete="off" oninput="showSuggestions('mealFood', 'mealSuggestions')" />
+      <div id="mealSuggestions" class="autocomplete-suggestions"></div>
+    </div>
 
     <label>Quantity (grams)</label>
     <input type="number" id="mealQty" placeholder="e.g. 120" />
